@@ -1,0 +1,17 @@
+\documentclass[12pt]{article}
+\usepackage{indentfirst}
+
+\title{MLRTEMS: Embedded Standard-ML}
+\author{Nathan Burgers}
+
+\begin{document}
+\maketitle
+
+\section{Summary}
+Functional programming is often ignored in embedded and real-time systems because of its perceived runtime overhead. Our project aims to provide a bridge between the MLton optimizing Standard-ML compiler, and the RTEMS real-time systems executive.
+
+\section{Project Overview}
+Standard-ML is a well-documented and standardized functional programming language with a strong, inferred Hindley-Milner type system. We argue that embedded systems could stand to benefit immensely from functional constructs such as immutable data structures and pattern matching provided in languages like Standard-ML. Embedded systems also require strict run-time performance guarantees, and Standard-ML provides mutable references and arrays to accommodate times when one would want to sacrifice purity for speed.\\
+\indent MLton translates Standard-ML code to optimized C and RTEMS is provided as a series of C libraries that are conditionally compiled to meet the needs of the system. In order to get a basic embedded system running Standard-ML, a set of primitives bridging RTEMS's threading system are needed
+
+\end{document}
