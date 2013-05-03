@@ -14,7 +14,7 @@ Functional programming is often ignored in embedded and real-time systems becaus
 \section{Motivation}
 C is currently the language of choice for embedded systems, and is the target language for RTEMS. Historically, C has proven itself to be insecure due to problems with dangling pointers, lack of true type safety, unbounded arrays, and ease of accidentally leaking memory. Embedded systems frequently demand high code stability and may be long-running processes where memory leaks are a serious issue.
 
-In contrast, Standard-ML provides true type safety, immutable data types, mutable references, bounded arrays, and garbage collection, among other features. I argue that embedded systems stand to benefit from functional programming concepts. Standard-ML is the language of choice because it has extensive specification and several mature implementations that emit C as their target language.
+In contrast, Standard-ML provides true type safety, immutable data types, mutable references, bounded arrays, and garbage collection, among other features. I argue that embedded systems stand to benefit from functional programming concepts. Many features of embedded systems map well to functional ideas such as stream processing and functional reactive programming. Standard-ML is the language of choice because it has extensive specification and several mature implementations that emit C as their target language.
 
 \section{Project Overview}
 
@@ -23,37 +23,47 @@ MLton translates Standard-ML code to optimized C and RTEMS is provided as a seri
 The primary focus of this project will be on tooling and will proceed in three phases:
 \begin{enumerate}
 \item Provide a build automation suite to make the process of contributing to the MLton and RTEMS projects simpler. RTEMS is notorious for being difficult to compile, and the barrier of entry for contributing to either of these projects is currently high.
-\item Develop a set of benchmarks suitable for a real-time system alongside MLton's benchmark suite and run them against real hardware, locating problem areas. This project currently has access to phsyical leon3 development boards.
+\item Develop a set of benchmarks suitable for a real-time system alongside MLton's benchmark suite and run them against real hardware, locating problem areas. I have access to LEON3 development boards.
 \item Target the areas of the MLton compiler that pose problems for real-time applications. It is expected that garbage collection will be the primary factor here. Methods of improving garbage collection speed can range from providing different functional data structure primitives, to altering the garbage collection scheme to reference counting or memory regions, etc.
 \end{enumerate}
 
 \section{Success Criteria}
 \begin{enumerate}
-\item An automated build suite can update and compile the MLton and RTEMS sources for producing binaries on RTEMS supported hardware.
-\item Get a suitable benchmark suite running, and the benchmarks online.
-\item Run Standard-ML code compiled with MLton and RTEMS on a physical device.
-\end{enumerate}
-
-\section{Far Reaching Goals}
-\begin{enumerate}
-\item Investigate options for and begin forking the MLton memory management scheme to provide real-time guarantees.
+\item An automated build suite can update and compile the MLton and RTEMS sources for producing binaries on RTEMS's supported hardware. Ideally supporting all target architectures.
+\item Get a suitable benchmark suite running on embedded hardware, and the benchmarks online.
+\item A proof-of-concept solution for real-time Standard-ML. Most likely this will involve forking MLton's memory management scheme.
 \end{enumerate}
 
 \section{Roadmap}
 I would like to work out the roadmap for this project closely with a mentor given discussion about where to take the project once MLton can build its own benchmarks on RTEMS with real hardware.
 \begin{description}
-\item[First 2 weeks] Meet with mentors and complete work on build automation suite.
-\item[Weeks 3 to 7] Compile MLton benchmark suite and get it running under RTEMS, addressing any issues preventing interfacing with RTEMS or cross-compilation.
-\item[Weeks 8 to 13] Address issues affecting real-time capability, like memory management. Possibly exploring memory regions or reference counting, etc.
+
+\item[Prior to GSoC] Prepare the project build and test environment. Get a centralized Github repository up with the build tools in their current state. Work with mentors to gain a better understanding of MLton's build process and where its incompatibilities with RTEMS may lie. Read through the MLton's code emitting source.
+
+\item[First week] Fork the MLton repository, and continue work scraping the RTEMS source tree to make a build generator. I intend to use Clojure to generate Ant build scripts that download, patch, and compile RTEMS for different architectures, primarily focusing on LEON3. The only dependency for the build tools will be Ant (amongst utilities like cURL and tar.) RTEMS requires special patched versions of some Autotools, GCC, GDB, and arithmetic libraries like MPFR. I intend to have the system set up a sandbox where these binaries don't interfere with a user's installed versions of GCC, etc.
+\item[Week 2] I expect to run into issues automating RTEMS compilation for different architectures, so I'm allotting some buffer time here.
+
+\item[Week 3] Provide bare-bones, possibly automated, bridge between RTEMS's IO libraries and MLton's FFI to run MLton's benchmarks. I expect RTEMS standard libraries will behave differently than how MLton expects, and this may take some time to get working.
+\item[Weeks 4 to 5] Get code compiled with MLton running under RTEMS on a virutal x86 environment such as QEMU. After this I want to run MLton's benchmarks on the system for a baseline and get those up on Github Pages. 
+\item[Weeks 6 to 7] Get MLton successfully cross-compiling its benchmarks with RTEMS on real hardware. I currently have access to LEON3 development boards through my undergraduate studies at University at Buffalo. I expect MLton's will have some compatibility problems with RTEMS's C compiler since it may rely on non-standard features of the GCC. MLton will need to be forked to solve these. I would want the benchmarks to be comprehensive to see exactly where the performance problems lie, and get these up online.
+
+\item[Week 8] Work with mentors outlining the direction the compiler should take to provide real-time guarantees, and select the most pressing issue if there are multiple. I expect memory management will be the biggest hurdle for real-time.
+\item[Weeks 8 to 9] Benchmark a reference implementation of our problem domain in straight C under RTEMS on the LEON3 board. C-based languages like Cyclone provide memory regions, and there are reference counting libraries for straight C. If the problem domain is memory management, then having a reference for the kinds of performance characteristics we are looking at will be useful.
+\item[Weeks 10 to 12] Get a rough implementation of the selected approach to the problem domain up. I don't expect to create a revolutionary solution for real-time functional programming completed in this time, but a working proof of concept is expected. This would preferably be a Standard-ML library, but may take the form of an extension to MLton if the need arises.
+\item[Week 13] Spend the remaining time doing code cleanup, polishing, and finalizing the web presence of the project. By this time I expect to have the benchmark suite for MLton, the custom benchmarks for RTEMS, and the build tools in a presentable state put up on Github Pages.
+
 \end{description}
+
+\section{Involvement Beyond GSoC}
+I am currently working on the problem of real-time Standard-ML under professor Lukasz Ziarek at University at Buffalo, and have deep interest in functional programming and compilers. I intend to stay with this project for at least the next two years, and intend to get Standard-ML into a production-ready state for soft real-time robotics. To get a working system the project will need to provide a strict scheduling system with appropriate threading and continuation primitives, alongside a garbage collector or other memory-management scheme that does not interfere with process timing. We'll need to develop the proper abstractions between RTEMS's system primitives and Standard-ML. In the long term, adding real-time guarantees to Standard-ML may require a language extension, such as manual reference counts or region annotations.
 
 \section{Qualifications}
 My resume can be downloaded in pdf form from \url{resume.nateb.me}
 \begin{itemize}
+\item Currently performing undergraduate research with Standard-ML under professor Lukasz Ziarek at University at Buffalo.
 \item Over six years of general programming experience.
 \item Over one year of experience developing tools at Refulgent Software LLC.
-\item Currently working on an automated build suite for RTEMS by scraping its latest versions, dependencies, and tool patches from the RTEMS Git repository. Written in Clojure.
-\item A vigorous interest in programming langauges and robotics.
+\item Currently working on an automated build suite for RTEMS by scraping its latest versions, dependencies, and tool patches from the RTEMS Git repository.
 
 \end{itemize}
 
