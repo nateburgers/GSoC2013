@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  3 MAY 2013 00:53
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  3 MAY 2013 01:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -211,31 +211,31 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 53.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 61.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 60.
  [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 61.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 60.
 
 (./gsoc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 61.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 61.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 60.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 60.
 Package rerunfilecheck Info: File `gsoc.out' has not changed.
 (rerunfilecheck)             Checksum: 44FCA9C9E958286F62AF6EAA1989D4A1;333.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 61.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 60.
  ) 
 Here is how much of TeX's memory you used:
  4180 strings out of 493488
  62769 string characters out of 3141326
- 139070 words of memory out of 3000000
+ 140070 words of memory out of 3000000
  7488 multiletter control sequences out of 15000+200000
  8670 words of font info for 31 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 29i,6n,28p,631b,398s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 29i,6n,28p,411b,336s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
 /usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></u
 sr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></us
 r/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on gsoc.pdf (3 pages, 60346 bytes).
+Output written on gsoc.pdf (3 pages, 60616 bytes).
 PDF statistics:
  81 PDF objects out of 1000 (max. 8388607)
  70 compressed objects within 1 object stream
