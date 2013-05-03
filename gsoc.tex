@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{indentfirst}
+\usepackage{hyperref}
 
 \title{MLRTEMS: Embedded Standard-ML}
 \author{Nathan Burgers}
@@ -8,10 +9,51 @@
 \maketitle
 
 \section{Summary}
-Functional programming is often ignored in embedded and real-time systems because of its perceived runtime overhead. Our project aims to provide a bridge between the MLton optimizing Standard-ML compiler, and the RTEMS real-time systems executive.
+Functional programming is often ignored in embedded and real-time systems because of its perceived runtime overhead. This project aims to provide a bridge between the MLton optimizing Standard-ML compiler, and the RTEMS real-time systems executive.
+
+\section{Motivation}
+C is currently the language of choice for embedded systems, and is the target language for RTEMS. Historically, C has proven itself to be insecure due to problems with dangling pointers, lack of true type safety, unbounded arrays, and ease of accidentally leaking memory. Embedded systems frequently demand high code stability and may be long-running processes where memory leaks are a serious issue.
+
+In contrast, Standard-ML provides true type safety, immutable data types, mutable references, bounded arrays, and garbage collection, among other features. Consequently I argue that embedded systems stand to benefit immensely from Standard-ML, and functional programming practices in general. Standard-ML is the language of choice because it has extensive specification and several mature implementations that emit C as their target language. MLton performs heavy code optimization techniques to speed up Standard-ML execution and appears to be a good target compiler to serve as the base for a real-time implementation.
 
 \section{Project Overview}
-Standard-ML is a well-documented and standardized functional programming language with a strong, inferred Hindley-Milner type system. We argue that embedded systems could stand to benefit immensely from functional constructs such as immutable data structures and pattern matching provided in languages like Standard-ML. Embedded systems also require strict run-time performance guarantees, and Standard-ML provides mutable references and arrays to accommodate times when one would want to sacrifice purity for speed.\\
-\indent MLton translates Standard-ML code to optimized C and RTEMS is provided as a series of C libraries that are conditionally compiled to meet the needs of the system. In order to get a basic embedded system running Standard-ML, a set of primitives bridging RTEMS's threading system are needed
+
+MLton translates Standard-ML code to optimized C and RTEMS is provided as a series of C libraries that are conditionally compiled to meet the needs of the system. A basic RTEMS embedded system using Standard-ML requires bridging the two technologies using MLton's foreign function interface, and an associated toolchain to build MLton, RTEMS, and the embedded software product.
+
+The primary focus of this project will be on tooling and will proceed in three phases:
+\begin{enumerate}
+\item Provide a build automation suite to make the process of contributing to the MLton and RTEMS projects simpler. A bridging of these technologies requires extensive compilation and RTEMS is notorious for being difficult to compile.
+\item Develop a set of benchmarks suitable for a real-time system alongside MLton's benchmark suite and run them against an embedded system. This project currently has access to phsyical leon3 development boards.
+\item Target the areas of the MLton compiler that pose problems for real-time applications. It is expected that garbage collection will be the primary factor here. Methods of improving garbage collection speed can range from providing different functional data structure primitives, to altering the garbage collection scheme to reference counting or memory regions, etc.
+\end{enumerate}
+
+\section{Success Criteria}
+\begin{enumerate}
+\item An automated build suite can update and compile the MLton and RTEMS sources for producing binaries on RTEMS supported hardware.
+\item Get a suitable benchmark suite online.
+\item Run Standard-ML code compiled with MLton and RTEMS on a physical device.
+\end{enumerate}
+
+\section{Far Reaching Goals}
+\begin{enumerate}
+\item Investigate options for and begin forking the MLton memory management scheme to provide real-time guarantees.
+\end{enumerate}
+
+\section{Roadmap}
+I would like to work out the roadmap for this project closely with a mentor given discussion about where to take the project once MLton can build its own benchmarks on RTEMS with real hardware.
+\begin{description}
+\item[First 2 weeks] Meet with mentors and complete work on build automation suite.
+\item[Weeks 3 to 7] Compile MLton benchmark suite and get it running under RTEMS, addressing any issues preventing interfacing with RTEMS and cross-compilation. I expect that it will take some time ironing out the compatability edge cases in MLton's emitted code for cross-compiling.
+\item[Weeks 8 to 13] Address issues affecting real-time capability, like memory management. Possibly exploring memory regions or reference counting, etc.
+\end{description}
+
+\section{Qualifications}
+My resume can be downloaded in pdf form from \url{resume.nateb.me}
+\begin{itemize}
+\item Over one year of experience developing internal tooling at Refulgent Software LLC.
+\item Currently working on an automated build suite for RTEMS by scraping its latest versions, dependencies, and tool patches from the RTEMS Git repository.
+\item A vigorous interest in programming langauges and embedded systems.
+
+\end{itemize}
 
 \end{document}
